@@ -273,11 +273,11 @@ public class PlotDrawHandler {
 			}
 		}
 
-		drawGraylines(xpoints, ypoints);
+		testAxisDrawGraylines(xpoints, ypoints);
 		base.setForegroundColor(ColorOwn.BLACK.transparency(Transparency.FOREGROUND));
 		drawAxisLine();
-		drawMarkers(xpoints, ypoints);
-		drawMarkerTexts(xpoints, xtext, ypoints, ytext);
+		testAxisDrawMarkers(xpoints, ypoints);
+		testAxisMarkerTexts(xpoints, xtext, ypoints, ytext);
 	}
 
 	/**
@@ -300,10 +300,14 @@ public class PlotDrawHandler {
 		}
 	}
 
-	private void drawGraylines(List<Integer> xpoints, List<Integer> ypoints) {
+	private void testAxisDrawGraylines(List<Integer> xpoints, List<Integer> ypoints) {
 		base.setForegroundColor(ColorOwn.BLACK.transparency(Transparency.SELECTION_BACKGROUND));
 		boolean drawVerticalGraylines = axisConfig.isxDescription() && axisConfig.drawDescriptionAxisMarkerGrayline() || !axisConfig.isxDescription() && axisConfig.drawValueAxisMarkerGrayline();
 		boolean drawHorizontalGraylines = !axisConfig.isxDescription() && axisConfig.drawDescriptionAxisMarkerGrayline() || axisConfig.isxDescription() && axisConfig.drawValueAxisMarkerGrayline();
+                drawGrayLines(xpoints, ypoints,drawVerticalGraylines, drawHorizontalGraylines );
+	}
+        
+        private void drawGrayLines(List<Integer> xpoints, List<Integer> ypoints, boolean drawVerticalGraylines, boolean drawHorizontalGraylines) {
 		if (drawVerticalGraylines) {
 			for (Integer x : xpoints) {
 				base.drawLine(x, canvas.getInnerUpPos(), x, canvas.getInnerDownPos());
@@ -313,12 +317,16 @@ public class PlotDrawHandler {
 			for (Integer y : ypoints) {
 				base.drawLine(canvas.getInnerLeftPos(), y, canvas.getInnerRightPos(), y);
 			}
-		}
-	}
+		}            
+        }
 
-	private void drawMarkers(List<Integer> xpoints, List<Integer> ypoints) {
+	private void testAxisDrawMarkers(List<Integer> xpoints, List<Integer> ypoints) {
 		boolean drawVerticalMarkers = axisConfig.isxDescription() && axisConfig.drawDescriptionAxisMarkers() || !axisConfig.isxDescription() && axisConfig.drawValueAxisMarkers();
 		boolean drawHorizontalMarkers = !axisConfig.isxDescription() && axisConfig.drawDescriptionAxisMarkers() || axisConfig.isxDescription() && axisConfig.drawValueAxisMarkers();
+                drawMarkers(xpoints, ypoints, drawVerticalMarkers, drawHorizontalMarkers);
+	}
+        
+        private void drawMarkers(List<Integer> xpoints, List<Integer> ypoints, boolean drawVerticalMarkers, boolean drawHorizontalMarkers) {  
 		if (drawVerticalMarkers) {
 			for (Integer x : xpoints) {
 				base.drawLine(x, axisConfig.getxAxisPos(), x, axisConfig.getxAxisPos() + AxisConfig.ARROW_SIZE);
@@ -328,12 +336,16 @@ public class PlotDrawHandler {
 			for (Integer y : ypoints) {
 				base.drawLine(axisConfig.getyAxisPos() - AxisConfig.ARROW_SIZE, y, axisConfig.getyAxisPos(), y);
 			}
-		}
-	}
+		}            
+        }      
 
-	private void drawMarkerTexts(List<Integer> xpoints, List<String> xtext, List<Integer> ypoints, List<String> ytext) {
+	private void testAxisMarkerTexts(List<Integer> xpoints, List<String> xtext, List<Integer> ypoints, List<String> ytext) {
 		boolean drawVerticalMarkerTexts = axisConfig.isxDescription() && axisConfig.drawDescriptionAxisMarkerText() || !axisConfig.isxDescription() && axisConfig.drawValueAxisMarkerText();
 		boolean drawHorizontalMarkerTexts = !axisConfig.isxDescription() && axisConfig.drawDescriptionAxisMarkerText() || axisConfig.isxDescription() && axisConfig.drawValueAxisMarkerText();
+                drawMarkerTexts(xpoints, xtext, ypoints, ytext, drawVerticalMarkerTexts, drawHorizontalMarkerTexts);
+	}
+        
+        private void drawMarkerTexts(List<Integer> xpoints, List<String> xtext, List<Integer> ypoints, List<String> ytext, boolean drawVerticalMarkerTexts, boolean drawHorizontalMarkerTexts) {   
 		if (drawVerticalMarkerTexts) {
 			for (int i = 0; i < xpoints.size(); i++) {
 				base.print(xtext.get(i), xpoints.get(i), axisConfig.getxAxisPos() + AxisConfig.ARROW_DISTANCE, AlignHorizontal.CENTER);
@@ -343,8 +355,8 @@ public class PlotDrawHandler {
 			for (int i = 0; i < ypoints.size(); i++) {
 				base.print(ytext.get(i), axisConfig.getyAxisPos() - 8, (int) (ypoints.get(i) + base.textHeightMax() / 2), AlignHorizontal.RIGHT);
 			}
-		}
-	}
+		}            
+        }     
 
 	private final void drawLineOrPoints(boolean xIsDescription, Double[][] values, int sourceAxisPos, int valueAxisPos, Double valueSegment, int descSegment, List<String> colors, boolean line) {
 		int cIndex = 0;

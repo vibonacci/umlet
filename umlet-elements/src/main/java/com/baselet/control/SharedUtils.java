@@ -32,8 +32,8 @@ public class SharedUtils {
 		int x = realignToGrid(false, rectangle.getX(), false);
 		int y = realignToGrid(false, rectangle.getY(), false);
 		if (realignHeightAndWidth) {
-			int width = realignToGrid(false, rectangle.getX() - x + rectangle.getWidth(), true); // IMPORTANT: the difference from original x and realigned x must be added, otherwise the upper example would return x=0, width=10, x2=10. x2 would be too small
-			int height = realignToGrid(false, rectangle.getY() - y + rectangle.getHeight(), true);
+			int width = realignToGrid(false, rectangle.getX() - x + (double)rectangle.getWidth(), true); // IMPORTANT: the difference from original x and realigned x must be added, otherwise the upper example would return x=0, width=10, x2=10. x2 would be too small
+			int height = realignToGrid(false, rectangle.getY() - y + (double)rectangle.getHeight(), true);
 			return new Rectangle(x, y, width, height);
 		}
 		else {

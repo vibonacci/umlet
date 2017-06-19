@@ -366,11 +366,8 @@ public class DiagramHandler {
 
 		int oldGridSize = getGridSize();
 
-		if (factor < 1 || factor > 20) {
+		if (factor < 1 || factor > 20 || (factor == oldGridSize)) {
 			return; // Only zoom between 10% and 200% is allowed
-		}
-		if (factor == oldGridSize) {
-			return; // Only zoom if gridsize has changed
 		}
 
 		setGridSize(factor);

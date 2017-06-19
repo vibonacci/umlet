@@ -95,14 +95,18 @@ public class TextSplitter {
 				log.error("Encountered unhandled enumeration value '" + hAlignment + "'.");
 				break;
 		}
+                
+                drawTextExecutor(textLines, width, drawer, topLeftX, topLeftY, hAlignment);
+	}
+        
+        public static void drawTextExecutor(String[] textLines, double width, DrawHandler drawer, double topLeftX, double topLeftY, AlignHorizontal hAlignment) {
 		for (String l : textLines) {
 			for (StringStyle wl : splitStringAlgorithm(l, width, drawer)) {
 				drawer.print(wl, topLeftX, topLeftY, hAlignment);
 				topLeftY += drawer.textHeightMaxWithSpace();
 			}
-		}
-
-	}
+		}            
+        }
 
 	/**
 	 * checks if the whole string would fit into the width

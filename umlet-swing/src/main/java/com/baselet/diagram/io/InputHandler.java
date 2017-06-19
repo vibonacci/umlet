@@ -42,8 +42,8 @@ public class InputHandler extends DefaultHandler {
 	private int h;
 	private String entityname;
 	private String code;
-	private String panel_attributes;
-	private String additional_attributes;
+	private String panelAttributes;
+	private String additionalAttributes;
 
 	private Integer currentGroup;
 	private final DiagramHandler handler;
@@ -64,12 +64,12 @@ public class InputHandler extends DefaultHandler {
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) {
 		elementtext = "";
-		if (qName.equals("element")) {
-			panel_attributes = "";
-			additional_attributes = "";
+		if ("element".equals(qName)) {
+			panelAttributes = "";
+			additionalAttributes = "";
 			code = null;
 		}
-		if (qName.equals("group")) { // TODO remove group-handling in InputHandler. Until UMLet v13, groups used own element-tags in XML. This has changed to the property group=x, so this handling is only for backwards compatibility
+		if ("group".equals(qName)) { // TODO remove group-handling in InputHandler. Until UMLet v13, groups used own element-tags in XML. This has changed to the property group=x, so this handling is only for backwards compatibility
 			currentGroup = handler.getDrawPanel().getSelector().getUnusedGroup();
 		}
 	}
@@ -78,7 +78,7 @@ public class InputHandler extends DefaultHandler {
 	public void endElement(String uri, String localName, String qName) {
 		String elementname = qName; // [UB]: we are not name-space aware, so use the qualified name
 
-		if (elementname.equals("help_text")) {
+		if ("help_text".equals(elementname)) {
 			handler.setHelpText(elementtext);
 			handler.getFontHandler().setDiagramDefaultFontSize(HelpPanelChanged.getFontsize(elementtext));
 			handler.getFontHandler().setDiagramDefaultFontFamily(HelpPanelChanged.getFontfamily(elementtext));
@@ -87,21 +87,19 @@ public class InputHandler extends DefaultHandler {
 				gui.getPropertyPane().switchToNonElement(elementtext);
 			}
 		}
-		else if (elementname.equals("zoom_level")) {
+		else if ("zoom_level".equals(elementname)) {
 			if (handler != null) {
 				handler.setGridSize(Integer.parseInt(elementtext));
 			}
 		}
-		else if (elementname.equals("group")) {
+                else if ("group".equals(elementname)) {
 			currentGroup = null;
 		}
-		else if (elementname.equals("element")) {
+		else if ("element".equals(elementname)) {
 			if (id != null) {
 				try {
-					NewGridElement e = ElementFactorySwing.create(ElementId.valueOf(id), new Rectangle(x, y, w, h), panel_attributes, additional_attributes, handler);
-					if (currentGroup != null) {
-						e.setProperty(GroupFacet.KEY, currentGroup);
-					}
+					NewGridElement e = ElementFactorySwing.create(ElementId.valueOf(id), new Rectangle(x, y, w, h), panelAttributes, additionalAttributes, handler);
+                                        e = currentGroupHandler(e);
 					_p.addElement(e);
 				} catch (Exception e) {
 					log.error("Cannot instantiate element with id: " + id, e);
@@ -124,8 +122,8 @@ public class InputHandler extends DefaultHandler {
 					e = new ErrorOccurred();
 				}
 				e.setRectangle(new Rectangle(x, y, w, h));
-				e.setPanelAttributes(panel_attributes);
-				e.setAdditionalAttributes(additional_attributes);
+				e.setPanelAttributes(panelAttributes);
+				e.setAdditionalAttributes(additionalAttributes);
 				handler.setHandlerAndInitListeners(e);
 
 				if (currentGroup != null) {
@@ -134,38 +132,41 @@ public class InputHandler extends DefaultHandler {
 				_p.addElement(e);
 			}
 		}
-		else if (elementname.equals("type")) {
+		else if ("type".equals(elementname)) {
 			entityname = elementtext;
 		}
-		else if (elementname.equals("id")) { // new elements have an id
+		else if ("id".equals(elementname)) { // new elements have an id
 			id = elementtext;
 		}
-		else if (elementname.equals("x")) {
-			Integer i = Integer.valueOf(elementtext);
-			x = i.intValue();
+		else if ("x".equals(elementname)) {
+                        x = Integer.parseInt(elementtext);
 		}
-		else if (elementname.equals("y")) {
-			Integer i = Integer.valueOf(elementtext);
-			y = i.intValue();
+		else if ("y".equals(elementname)) {
+                        y = Integer.parseInt(elementtext);
 		}
-		else if (elementname.equals("w")) {
-			Integer i = Integer.valueOf(elementtext);
-			w = i.intValue();
+		else if ("w".equals(elementname)) {
+                        w = Integer.parseInt(elementtext);
 		}
-		else if (elementname.equals("h")) {
-			Integer i = Integer.valueOf(elementtext);
-			h = i.intValue();
+		else if ("h".equals(elementname)) {
+                        h = Integer.parseInt(elementtext);
 		}
-		else if (elementname.equals("panel_attributes")) {
-			panel_attributes = elementtext;
+		else if ("panel_attributes".equals(elementname)) {
+			panelAttributes = elementtext;
 		}
-		else if (elementname.equals("additional_attributes")) {
-			additional_attributes = elementtext;
+		else if ("additional_attributes".equals(elementname)) {
+			additionalAttributes = elementtext;
 		}
-		else if (elementname.equals("custom_code")) {
+		else if ("custom_code".equals(elementname)) {
 			code = elementtext;
 		}
 	}
+        
+        public NewGridElement currentGroupHandler(NewGridElement e) {
+            if (currentGroup != null) {
+                e.setProperty(GroupFacet.KEY, currentGroup);
+            }        
+            return e;
+        }
 
 	@Override
 	public void characters(char[] ch, int start, int length) {
@@ -174,7 +175,7 @@ public class InputHandler extends DefaultHandler {
 
 	private static GridElement getOldGridElementFromPath(String path) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		Class<?> foundClass = null;
-		String className = path.substring(path.lastIndexOf("."));
+		String className = path.substring(path.lastIndexOf('.'));
 		for (String possPackage : oldGridElementPackages) {
 			try {
 				foundClass = Thread.currentThread().getContextClassLoader().loadClass(possPackage + className);
