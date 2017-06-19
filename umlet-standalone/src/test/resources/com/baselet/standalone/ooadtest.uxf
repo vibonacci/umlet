@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0-SNAPSHOT">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>10</x>
+      <y>10</y>
+      <w>890</w>
+      <h>260</h>
+    </coordinates>
+    <panel_attributes>ooad::Klant
+--
+~klantId: int
+~klantNaam: String
+~adres: String
+~email: String
+~betalingsgegevens: String
+~afleveradres: String
+#password: String
+--
++Klant(int klantId, String klantNaam, String adres, String email, String betalingsgegevens, String afleveradres, String password): ctor
++registreerKlant(): void
++updateProfile(int klantId, String klantnaam, String adres, String email, String betalingsgegevens, String afleveradres, String password): void
++login(int klandId, String password): void
++logout(): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>910</x>
+      <y>10</y>
+      <w>650</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>ooad::Bestelling
+--
+~orderId: int
+~datumBestelling: String
+~datumLevering: String
+~klant: Klant
+~shippingID: int
+~pakketten: ArrayList&lt;Pakket&gt;
+~totaalPrijs: double
+--
++Bestelling(int orderId, String datumBestelling, String datumLevering, Klant klant, int shippingID): ctor
++berekenTotaalPrijs(): void
++voegPakketToe(Pakket p): void
++plaatsBestelling(): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>10</x>
+      <y>280</y>
+      <w>530</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>ooad::Pakket
+--
+~pakketID: int
+~pakketNaam: String
+~voorraad: boolean
+~toevoegDatum: String
+~ingredienten: ArrayList&lt;Ingredient&gt;
+~prijs: double
+--
++Pakket(int pakketID, String pakketNaam, String toevoegDatum, double prijs): ctor
+~voegIngredientToe(Ingredient ingredient): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>550</x>
+      <y>280</y>
+      <w>710</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>ooad::Ingredient
+--
+~ingredientID: int
+~ingredientNaam: String
+~voorraad: int
+~toevoegDatum: String
+~allergenen: String
+--
++Ingredient(int ingredientID, String toevoegDatum, int voorraad, String allergenen, String ingredientNaam): ctor
+~updateVoorraad(int hoeveelheid): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1270</x>
+      <y>280</y>
+      <w>300</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>ooad::Abonnement
+--
+~aboId: int
+~bestellingen: HashMap&lt;Integer, Bestelling&gt;
+~klant: Klant
+--
++Abonnement(int aboId, Klant klant): ctor
++voegBestellingToe(Bestelling b, int dag): void
++plaatsBestelling(): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>10</x>
+      <y>480</y>
+      <w>180</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>ooad::FoodieMarket
+--
+--
++main(String[] args): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
