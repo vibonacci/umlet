@@ -68,6 +68,11 @@ public class MainBatchmodeTest {
 		File outWithoutCreated = changeLines(copyToTmp("out_newCustomElement.eps"), "%%CreationDate", false);
 		assertFilesEqual(outWithoutCreated, output);
 	}
+        
+        @Test
+        public void testOnzin() {
+            assertTrue(false);
+        }
 
 	private void assertImageEqual(File expected, File actual) throws IOException {
 		BufferedImage expectedPicture = ImageIO.read(expected);
