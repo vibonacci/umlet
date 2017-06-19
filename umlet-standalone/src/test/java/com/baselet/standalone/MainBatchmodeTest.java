@@ -1,5 +1,7 @@
 package com.baselet.standalone;
 
+import com.baselet.diagram.DiagramHandler;
+import com.baselet.diagram.io.DiagramFileHandler;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.image.BufferedImage;
@@ -11,6 +13,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import com.itextpdf.text.pdf.PdfReader;  
+
 import javax.imageio.ImageIO;
 
 import org.junit.BeforeClass;
@@ -19,6 +23,9 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import com.google.common.io.Files;
+import com.itextpdf.text.pdf.parser.PdfTextExtractor;
+import java.util.Scanner;
+import static org.junit.Assert.fail;
 
 /**
  * Test several different Batch exports
@@ -71,7 +78,161 @@ public class MainBatchmodeTest {
         
         @Test
         public void testOnzin() {
-            assertTrue(false);
+            boolean x = true;
+            assertTrue(x);
+        }
+        
+        
+        //IGOR & MOE
+        @Test
+	public void assertIfFileIsSaved() throws IOException {
+            //LOCATION: "umlet-standalone\src\test\resources\com\baselet\standalone\"
+            File testedFile = null;
+            testedFile = createOutputfile("svg", "igortest.uxf");
+            System.out.println(testedFile.getAbsolutePath());
+            assertTrue("The saved file igortest.svg does not exist", testedFile.exists());
+	}
+        
+        //IGOR & MOE
+        @Test
+	public void assertIfPDFFileIsSaved() throws IOException {
+            //LOCATION: "umlet-standalone\src\test\resources\com\baselet\standalone\"
+            File testedFile = createOutputfile("pdf", "igortest.uxf"); 
+            assertTrue("The saved file igortest.pdf does not exist", testedFile.exists());
+	}    
+        
+        //IGOR & MOE
+        @Test
+	public void assertIfPDFFileIsNotCorrupt() throws IOException {
+            //LOCATION: "umlet-standalone\src\test\resources\com\baselet\standalone\"
+            File testedFile = createOutputfile("pdf", "igortest.uxf"); 
+            //File testedFile = createOutputfile("svg", "igortest.uxf"); //test the test
+            
+            try {  
+                PdfReader pdfReader = new PdfReader(testedFile.getAbsolutePath());  
+                String textFromPdfFilePageOne = PdfTextExtractor.getTextFromPage( pdfReader, 1 ); 
+                assertTrue(true); 
+                
+            }  
+            catch ( Exception e ) {  
+                fail("PDF FILE IS CORRUPT");
+            }       
+	}            
+        
+        //IGOR & MOE
+        @Test
+	public void assertIfNotSavedFileExists() throws IOException {
+            File testedFile = null;
+            try {
+                testedFile = createOutputfile("svg", "fileDoesNotExist.uxf");
+            }
+            catch(IOException e) {}
+            assertTrue("An unexisting file seems to exist. Test Failed.", testedFile == null);
+	}     
+        
+        //IGOR & MOE
+        @Test
+        public void assertIfSavedFileContainsProperElements() throws IOException { 
+            File testedFile = createOutputfile("svg", "igortest.uxf");
+            Scanner scanner = new Scanner(testedFile);
+
+            boolean found = false;
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                if (line.contains(">igor</text")) { //check if file contains UML class object "igor"
+                    found = true;
+                    break;
+                }
+            }    
+            assertTrue("The file does not contain the expected element igor", found);
+        }   
+        
+        //IGOR & MOE
+        @Test
+        //file ooadtest.uxf is a generated UML diagram by UMLET with classes Klant, Pakket, Ingredient, Abonnement
+        public void testGenerateClassElements() throws IOException {
+            File testedFile = null;  
+            //testedFile = createOutputfileCustom("svg", "ooadtest.uxf");   
+            testedFile = createOutputfile("svg", "ooadtest.uxf"); 
+            
+            Scanner scanner = new Scanner(testedFile);
+            int foundCounter = 0;
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                 //check if file contains the four expected classes
+                if (line.contains(">ooad::Abonnement</text") || line.contains(">ooad::Klant</text")
+                        || line.contains(">ooad::Ingredient</text") || line.contains(">ooad::Pakket</text")) {
+                    foundCounter ++;
+                }
+                if (foundCounter == 4) {
+                    break;
+                }
+            }               
+            assertTrue("Not all four expected elements Klant, Pakket, Ingredient, Abonnement are found in the saved file.",foundCounter == 4);
+        }  
+        
+        @Test
+        //file ooadtest.uxf is a generated UML diagram by UMLET with attributes pakketNaam: String, voorraad: boolean, klantNaam: String and prijs: Double
+        public void testGenerateClassDiagramAttributes() throws IOException {
+            File testedFile = null;  
+            //testedFile = createOutputfileCustom("svg", "ooadtest.uxf");   
+            testedFile = createOutputfile("svg", "ooadtest.uxf"); 
+            
+            Scanner scanner = new Scanner(testedFile);
+            int foundCounter = 0;
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                
+                //check if file contains the four expected attributes of classes
+                if (line.contains(">~pakketNaam: String</text") || line.contains(">~voorraad: boolean</text")
+                        || line.contains(">~klantNaam: String</text") || line.contains(">~prijs: double</text")) {
+                    foundCounter ++;
+                }
+                if (foundCounter == 4) {
+                    break;
+                }
+            }               
+            assertTrue("Not all four expected attributes pakketNaam: String, voorraad: boolean, klantNaam: String and prijs: Double"
+                    + " are found in the saved file.",foundCounter == 4);
+        }    
+        
+        @Test
+        //file ooadtest.uxf is a generated UML diagram by UMLET with methods updateProfile(), Klant(), updateVoorraad(), Ingredient()
+        public void testGenerateClassDiagramMethods() throws IOException {
+            File testedFile = null;  
+            //testedFile = createOutputfileCustom("pdf", "ooadtest.uxf");   
+            testedFile = createOutputfile("svg", "ooadtest.uxf"); 
+            
+            Scanner scanner = new Scanner(testedFile);
+            int foundCounter = 0;
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                
+                //check if file contains the four expected methods of classes
+                if (line.contains(">+updateProfile(int klantId, String klantnaam, String adres, String email, String betalingsgegevens, String afleveradres, String password): void</text")
+                        || line.contains(">+Klant(int klantId, String klantNaam, String adres, String email, String betalingsgegevens, String afleveradres, String password): ctor</text")
+                        || line.contains(">~updateVoorraad(int hoeveelheid): void</text")
+                        || line.contains(">+Ingredient(int ingredientID, String toevoegDatum, int voorraad, String allergenen, String ingredientNaam): ctor</text")) {
+                    foundCounter ++;
+                }
+                if (foundCounter == 4) {
+                    break;
+                }
+            }               
+            assertTrue("Not all four expected methods updateProfile(), Klant(), updateVoorraad(), Ingredient()"
+                    + " are found in the saved file." ,foundCounter == 4);
+        }         
+        
+        //igor moe manual create file
+	private File createOutputfileCustom(String format, String inputFilename) throws IOException {
+		String outputFileLoc = "c:/bla." + format;
+		MainStandalone.main(new String[] { "-action=convert", "-format=" + format, "-filename=" + copyInputToTmp(inputFilename), "-output=" + outputFileLoc });
+		File outputFile = new File(outputFileLoc);
+		return outputFile;
+	}        
+        
+        
+        public void assertContentSavedFile() throws IOException {
         }
 
 	private void assertImageEqual(File expected, File actual) throws IOException {

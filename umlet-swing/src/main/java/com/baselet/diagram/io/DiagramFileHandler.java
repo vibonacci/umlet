@@ -256,7 +256,7 @@ public class DiagramFileHandler {
 
 		}
 	}
-
+        
 	public void doSaveAs(String fileextension) throws IOException {
 		boolean ownXmlFormat = fileextension.equals(Program.getInstance().getExtension());
 		JFileChooser fileChooser = createSaveFileChooser(!ownXmlFormat);
