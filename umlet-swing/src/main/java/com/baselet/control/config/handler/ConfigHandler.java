@@ -84,8 +84,8 @@ public class ConfigHandler {
 		cfg.setPropertiesPanelFontsize(getIntProperty(props, PROPERTIES_PANEL_FONTSIZE, cfg.getPropertiesPanelFontsize()));
 		cfg.setDefaultFontFamily(getStringProperty(props, DEFAULT_FONTFAMILY, cfg.getDefaultFontFamily()));
 		SharedConfig.getInstance().setShow_stickingpolygon(getBoolProperty(props, SHOW_STICKINGPOLYGON, SharedConfig.getInstance().isShow_stickingpolygon()));
-		cfg.setShowGrid(getBoolProperty(props, SHOW_GRID, cfg.isShowGrid()));
-		cfg.setEnableCustomElements(getBoolProperty(props, ENABLE_CUSTOM_ELEMENTS, cfg.isEnableCustomElements()));
+		cfg.setShow_grid(getBoolProperty(props, SHOW_GRID, cfg.isShow_grid()));
+		cfg.setEnable_custom_elements(getBoolProperty(props, ENABLE_CUSTOM_ELEMENTS, cfg.isEnable_custom_elements()));
 		cfg.setUiManager(getStringProperty(props, UI_MANAGER, cfg.getUiManager()));
 		cfg.setPrintPadding(getIntProperty(props, PRINT_PADDING, cfg.getPrintPadding()));
 		cfg.setPdfExportFont(getStringProperty(props, PDF_EXPORT_FONT, cfg.getPdfExportFont()));
@@ -97,15 +97,15 @@ public class ConfigHandler {
 		cfg.setSaveFileHome(getStringProperty(props, SAVE_FILE_HOME, cfg.getSaveFileHome()));
 		SharedConfig.getInstance().setDev_mode(getBoolProperty(props, DEV_MODE, SharedConfig.getInstance().isDev_mode()));
 		cfg.setLastUsedPalette(getStringProperty(props, LAST_USED_PALETTE, cfg.getLastUsedPalette()));
-		cfg.setMainSplitPosition(getIntProperty(props, MAIN_SPLIT_POSITION, cfg.getMainSplitPosition()));
-		cfg.setRightSplitPosition(getIntProperty(props, RIGHT_SPLIT_POSITION, cfg.getRightSplitPosition()));
-		cfg.setMail_split_position(getIntProperty(props, MAIL_SPLIT_POSITION, cfg.getMailSplitPosition()));
-		cfg.setStartMaximized(getBoolProperty(props, START_MAXIMIZED, cfg.isStartMaximized()));
+		cfg.setMain_split_position(getIntProperty(props, MAIN_SPLIT_POSITION, cfg.getMain_split_position()));
+		cfg.setRight_split_position(getIntProperty(props, RIGHT_SPLIT_POSITION, cfg.getRight_split_position()));
+		cfg.setMail_split_position(getIntProperty(props, MAIL_SPLIT_POSITION, cfg.getMail_split_position()));
+		cfg.setStart_maximized(getBoolProperty(props, START_MAXIMIZED, cfg.isStart_maximized()));
 
 		// In case of start_maximized=true we don't store any size or location information
-		if (!cfg.isStartMaximized()) {
-			cfg.setProgramSize(getDimensionProperty(props, PROGRAM_SIZE, cfg.getProgramSize()));
-			cfg.setProgramLocation(getPointProperty(props, PROGRAM_LOCATION, cfg.getProgramLocation()));
+		if (!cfg.isStart_maximized()) {
+			cfg.setProgram_size(getDimensionProperty(props, PROGRAM_SIZE, cfg.getProgram_size()));
+			cfg.setProgram_location(getPointProperty(props, PROGRAM_LOCATION, cfg.getProgram_location()));
 		}
 
 		String recentFiles = props.getProperty(RECENT_FILES);
@@ -153,8 +153,8 @@ public class ConfigHandler {
 			props.setProperty(PROPERTIES_PANEL_FONTSIZE, Integer.toString(cfg.getPropertiesPanelFontsize()));
 			props.setProperty(DEFAULT_FONTFAMILY, cfg.getDefaultFontFamily());
 			props.setProperty(SHOW_STICKINGPOLYGON, Boolean.toString(SharedConfig.getInstance().isShow_stickingpolygon()));
-			props.setProperty(SHOW_GRID, Boolean.toString(cfg.isShowGrid()));
-			props.setProperty(ENABLE_CUSTOM_ELEMENTS, Boolean.toString(cfg.isEnableCustomElements()));
+			props.setProperty(SHOW_GRID, Boolean.toString(cfg.isShow_grid()));
+			props.setProperty(ENABLE_CUSTOM_ELEMENTS, Boolean.toString(cfg.isEnable_custom_elements()));
 			props.setProperty(UI_MANAGER, cfg.getUiManager());
 			props.setProperty(PRINT_PADDING, Integer.toString(cfg.getPrintPadding()));
 			props.setProperty(PDF_EXPORT_FONT, cfg.getPdfExportFont());

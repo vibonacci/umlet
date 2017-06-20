@@ -66,12 +66,12 @@ public class StandaloneGUIBuilder extends BaseGUIBuilder {
 		mainFrame.addKeyListener(new SearchKeyListener());
 		mainFrame.addWindowListener(new SwingWindowListener());
 		mainFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE); // closing is handled in the StandaloneGUI.closeWindow() callback (fix for issue #250)
-		mainFrame.setBounds(Config.getInstance().getProgramLocation().x, Config.getInstance().getProgramLocation().y, Config.getInstance().getProgramSize().width, Config.getInstance().getProgramSize().height);
+		mainFrame.setBounds(Config.getInstance().getProgram_location().x, Config.getInstance().getProgram_location().y, Config.getInstance().getProgram_size().width, Config.getInstance().getProgram_size().height);
 		mainFrame.setTitle(Program.getInstance().getProgramName() + " - Free UML Tool for Fast UML Diagrams");
 
 		setImage(mainFrame);
 
-		if (Config.getInstance().isStartMaximized()) {
+		if (Config.getInstance().isStart_maximized()) {
 			// If Main starts maximized we set fixed bounds and must set the frame visible
 			// now to avoid a bug where the right sidebar doesn't have the correct size
 			mainFrame.setExtendedState(mainFrame.getExtendedState() | Frame.MAXIMIZED_BOTH);
@@ -81,7 +81,7 @@ public class StandaloneGUIBuilder extends BaseGUIBuilder {
 		mainFrame.setJMenuBar(menuBuilder.createMenu(createSearchPanel(), createZoomPanel(), createMailButton()));
 
 		JPanel diagramTabPanel = createDiagramTabPanel();
-		int mainDividerLoc = Math.min(mainFrame.getSize().width - Constants.MIN_MAIN_SPLITPANEL_SIZE, Config.getInstance().getMainSplitPosition());
+		int mainDividerLoc = Math.min(mainFrame.getSize().width - Constants.MIN_MAIN_SPLITPANEL_SIZE, Config.getInstance().getMain_split_position());
 		JSplitPane baseSplitPane = initBase(diagramTabPanel, mainDividerLoc);
 		mainFrame.add(baseSplitPane);
 

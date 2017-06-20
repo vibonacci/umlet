@@ -184,7 +184,7 @@ public class CustomElementCompiler {
 
 	public GridElement genEntity(String codeParam, ErrorHandler errorhandler) {
                 String code = codeParam;
-		if (!Config.getInstance().isEnableCustomElements()) {
+		if (!Config.getInstance().isEnable_custom_elements()) {
 			String errorMessage = "Custom Elements are disabled\nEnabled them in the Options\nOnly open them from trusted\nsources to avoid malicious code execution!";
 			if (SharedConfig.getInstance().isDev_mode()) {
 				errorMessage += "\n------------------------------------\n" + code;
