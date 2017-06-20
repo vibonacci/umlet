@@ -15,7 +15,7 @@ public class Converter {
 		if (in == null) {
 			return null;
 		}
-		return new java.awt.Rectangle(in.x, in.y, in.width, in.height);
+		return new java.awt.Rectangle(in.getX(), in.getY(), in.getWidth(), in.getWidth());
 	}
 
 	public static Rectangle convert(java.awt.Rectangle in) {

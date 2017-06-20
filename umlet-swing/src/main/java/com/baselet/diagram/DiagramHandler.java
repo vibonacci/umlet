@@ -334,10 +334,10 @@ public class DiagramHandler {
 		 */
 
 		for (GridElement entity : selectedEntities) {
-			int newX = entity.getRectangle().x * toFactor / fromFactor;
-			int newY = entity.getRectangle().y * toFactor / fromFactor;
-			int newW = entity.getRectangle().width * toFactor / fromFactor;
-			int newH = entity.getRectangle().height * toFactor / fromFactor;
+			int newX = entity.getRectangle().getX() * toFactor / fromFactor;
+			int newY = entity.getRectangle().getY() * toFactor / fromFactor;
+			int newW = entity.getRectangle().getWidth() * toFactor / fromFactor;
+			int newH = entity.getRectangle().getHeight() * toFactor / fromFactor;
 			entity.setLocation(realignTo(newX, toFactor), realignTo(newY, toFactor));
 			// Normally there should be no realign here but relations and custom elements sometimes must be realigned therefore we don't log it as an error
 			entity.setSize(realignTo(newW, toFactor), realignTo(newH, toFactor));

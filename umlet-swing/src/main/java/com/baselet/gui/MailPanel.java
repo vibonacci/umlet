@@ -133,7 +133,7 @@ public class MailPanel extends JPanel {
 		initAndFillComponents();
 
 		setLayout(layout);
-		setSize(new Dimension(0, Config.getInstance().getMail_split_position()));
+		setSize(new Dimension(0, Config.getInstance().getMailSplitPosition()));
 
 		int line = 0;
 		addComponent(this, layout, Box.createRigidArea(new Dimension(0, verticalDividerSpace)), 0, line, 10, 1, fillWidth, fullWeight, 0, noPadding);

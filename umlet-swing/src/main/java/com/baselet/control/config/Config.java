@@ -171,23 +171,23 @@ public class Config {
 		this.printPadding = printPadding;
 	}
 
-	public Point getProgram_location() {
+	public Point getProgramLocation() {
 		return program_location;
 	}
 
-	public void setProgram_location(Point program_location) {
+	public void setProgramLocation(Point program_location) {
 		this.program_location = program_location;
 	}
 
-	public Dimension getProgram_size() {
+	public Dimension getProgramSize() {
 		return program_size;
 	}
 
-	public void setProgram_size(Dimension program_size) {
+	public void setProgramSize(Dimension program_size) {
 		this.program_size = program_size;
 	}
 
-	public int getMail_split_position() {
+	public int getMailSplitPosition() {
 		return mail_split_position;
 	}
 
@@ -195,43 +195,43 @@ public class Config {
 		this.mail_split_position = mail_split_position;
 	}
 
-	public int getRight_split_position() {
+	public int getRightSplitPosition() {
 		return right_split_position;
 	}
 
-	public void setRight_split_position(int right_split_position) {
+	public void setRightSplitPosition(int right_split_position) {
 		this.right_split_position = right_split_position;
 	}
 
-	public int getMain_split_position() {
+	public int getMainSplitPosition() {
 		return main_split_position;
 	}
 
-	public void setMain_split_position(int main_split_position) {
+	public void setMainSplitPosition(int main_split_position) {
 		this.main_split_position = main_split_position;
 	}
 
-	public boolean isEnable_custom_elements() {
+	public boolean isEnableCustomElements() {
 		return enable_custom_elements;
 	}
 
-	public void setEnable_custom_elements(boolean enable_custom_elements) {
+	public void setEnableCustomElements(boolean enable_custom_elements) {
 		this.enable_custom_elements = enable_custom_elements;
 	}
 
-	public boolean isShow_grid() {
+	public boolean isShowGrid() {
 		return show_grid;
 	}
 
-	public void setShow_grid(boolean show_grid) {
+	public void setShowGrid(boolean show_grid) {
 		this.show_grid = show_grid;
 	}
 
-	public boolean isStart_maximized() {
+	public boolean isStartMaximized() {
 		return start_maximized;
 	}
 
-	public void setStart_maximized(boolean start_maximized) {
+	public void setStartMaximized(boolean start_maximized) {
 		this.start_maximized = start_maximized;
 	}
 

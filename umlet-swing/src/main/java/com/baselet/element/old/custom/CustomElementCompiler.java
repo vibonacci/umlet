@@ -30,65 +30,65 @@ public class CustomElementCompiler {
 
 	private static final Logger log = LoggerFactory.getLogger(CustomElementCompiler.class);
 
+        private final File SOURCE_FILE;
 	private static CustomElementCompiler compiler;
-	private static final String templatefile = "Default.java";
+	private static final String TEMPLATE_FILE = "Default.java";
 	private final String template;
-	private final Pattern template_pattern;
-	private Matcher template_match;
+	private final Pattern templatePattern;
+	private Matcher templateMatch;
 	private final String classname;
 	private int beforecodelines; // lines of code before the custom code begins (for error processing)
-	private List<CompileError> compilation_errors;
-	private boolean global_error;
+	private List<CompileError> compilationErrors;
+	private boolean globalError;
 
+
+	private CustomElementCompiler() {
+		globalError = false;
+		compilationErrors = new ArrayList<CompileError>();
+		beforecodelines = 0;
+		templatePattern = Pattern.compile("(.*)(/\\*\\*\\*\\*CUSTOM_CODE START\\*\\*\\*\\*/\n)(.*)(\n\\s\\s/\\*\\*\\*\\*CUSTOM_CODE END\\*\\*\\*\\*/)(.*)", Pattern.DOTALL);
+		template = loadJavaSource(new File(Path.customElements() + TEMPLATE_FILE));
+		if (!"".equals(template)) {
+			templateMatch = templatePattern.matcher(template);
+			try {
+				if (templateMatch.matches()) {
+					beforecodelines = templateMatch.group(1).split(Constants.NEWLINE).length;
+				}
+				else {
+					globalError = true;
+				}
+			} catch (Exception ex) {
+                            log.error("Something went wrong compiling a custom element", ex);
+			}
+		}
+		else {
+			globalError = true;
+		}
+
+		classname = Constants.CUSTOM_ELEMENT_CLASSNAME;
+		SOURCE_FILE = new File(Path.temp() + classname + ".java");
+		SOURCE_FILE.deleteOnExit();
+		new File(Path.temp() + classname + ".class").deleteOnExit();
+	}
+        
 	public static CustomElementCompiler getInstance() {
 		if (compiler == null) {
 			compiler = new CustomElementCompiler();
 		}
 		return compiler;
-	}
-
-	private final File sourcefile;
-
-	private CustomElementCompiler() {
-		global_error = false;
-		compilation_errors = new ArrayList<CompileError>();
-		beforecodelines = 0;
-		template_pattern = Pattern.compile("(.*)(/\\*\\*\\*\\*CUSTOM_CODE START\\*\\*\\*\\*/\n)(.*)(\n\\s\\s/\\*\\*\\*\\*CUSTOM_CODE END\\*\\*\\*\\*/)(.*)", Pattern.DOTALL);
-		template = loadJavaSource(new File(Path.customElements() + templatefile));
-		if (!"".equals(template)) {
-			template_match = template_pattern.matcher(template);
-			try {
-				if (template_match.matches()) {
-					beforecodelines = template_match.group(1).split(Constants.NEWLINE).length;
-				}
-				else {
-					global_error = true;
-				}
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		}
-		else {
-			global_error = true;
-		}
-
-		classname = Constants.CUSTOM_ELEMENT_CLASSNAME;
-		sourcefile = new File(Path.temp() + classname + ".java");
-		sourcefile.deleteOnExit();
-		new File(Path.temp() + classname + ".class").deleteOnExit();
-	}
+	}        
 
 	// compiles the element and returns the new entity if successful
 	private CustomElement compile(String code) {
 		saveJavaSource(code);
 		CustomElement entity = null;
-		compilation_errors.clear();
+		compilationErrors.clear();
 		try {
 			StringWriter compilerErrorMessageSW = new StringWriter(); // catch compiler messages
 			PrintWriter compilerErrorMessagePW = new PrintWriter(compilerErrorMessageSW);
 			String javaVersion = "-\"1.6\""; // custom elements use Java6 (previously SystemInfo.JAVA_VERSION, but this only works if the compiler.jar supports the system java version which is not guaranteed)
 			String classpath = "-classpath \"" + createClasspath() + "\"";
-			String sourcefile = "\"" + this.sourcefile.getAbsolutePath() + "\"";
+			String sourcefile = "\"" + this.SOURCE_FILE.getAbsolutePath() + "\"";
 
 			// Compiler Information at http://dev.eclipse.org/viewcvs/index.cgi/jdt-core-home/howto/batch%20compile/batchCompile.html?revision=1.7
 			@SuppressWarnings("deprecation")
@@ -105,13 +105,13 @@ public class CustomElementCompiler {
 				}
 			}
 			else {
-				compilation_errors = CompileError.getListFromString(compilerErrorMessageSW.toString(), beforecodelines);
+				compilationErrors = CompileError.getListFromString(compilerErrorMessageSW.toString(), beforecodelines);
 			}
 		} catch (Exception e) {
 			log.error(null, e);
 		}
 		if (entity == null) {
-			entity = new CustomElementWithErrors(compilation_errors);
+			entity = new CustomElementWithErrors(compilationErrors);
 		}
 		return entity;
 	}
@@ -148,7 +148,7 @@ public class CustomElementCompiler {
 	private void saveJavaSource(String code) { // LME3
 		BufferedWriter bw = null;
 		try {
-			bw = new BufferedWriter(new FileWriter(sourcefile, false));
+			bw = new BufferedWriter(new FileWriter(SOURCE_FILE, false));
 			bw.write(parseCodeIntoTemplate(code));
 			bw.flush();
 		} catch (IOException e) {
@@ -158,14 +158,14 @@ public class CustomElementCompiler {
 				try {
 					bw.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+                                        log.error("saving java source went wrong", e);
 				}
 			}
 		}
 	}
 
 	private String parseCodeFromTemplate(String template) {
-		Matcher m = template_pattern.matcher(template);
+		Matcher m = templatePattern.matcher(template);
 		if (m.matches()) {
 			return m.group(3);
 		}
@@ -175,22 +175,23 @@ public class CustomElementCompiler {
 	}
 
 	private String parseCodeIntoTemplate(String code) {
-		return template_match.group(1).replaceFirst("<!CLASSNAME!>", classname) +
-				template_match.group(2) +
+		return templateMatch.group(1).replaceFirst("<!CLASSNAME!>", classname) +
+				templateMatch.group(2) +
 				code +
-				template_match.group(4) +
-				template_match.group(5);
+				templateMatch.group(4) +
+				templateMatch.group(5);
 	}
 
-	public GridElement genEntity(String code, ErrorHandler errorhandler) {
-		if (!Config.getInstance().isEnable_custom_elements()) {
+	public GridElement genEntity(String codeParam, ErrorHandler errorhandler) {
+                String code = codeParam;
+		if (!Config.getInstance().isEnableCustomElements()) {
 			String errorMessage = "Custom Elements are disabled\nEnabled them in the Options\nOnly open them from trusted\nsources to avoid malicious code execution!";
 			if (SharedConfig.getInstance().isDev_mode()) {
 				errorMessage += "\n------------------------------------\n" + code;
 			}
 			return new ErrorOccurred(errorMessage);
 		}
-		if (global_error) {
+		if (globalError) {
 			return new ErrorOccurred();
 		}
 
@@ -200,7 +201,7 @@ public class CustomElementCompiler {
 
 		CustomElement element = compile(code);
 		if (errorhandler != null) {
-			errorhandler.addErrors(compilation_errors);
+			errorhandler.addErrors(compilationErrors);
 		}
 		element.setCode(code);
 		return element;

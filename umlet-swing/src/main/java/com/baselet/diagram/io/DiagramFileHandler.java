@@ -306,13 +306,11 @@ public class DiagramFileHandler {
 	}
 
 	public void doExportAs(String extension, File file) throws IOException {
-		// CustomElementSecurityManager.addThreadPrivileges(Thread.currentThread(), fileName);
 		try {
 			OutputHandler.createAndOutputToFile(extension, file, handler);
 		} catch (Exception e) {
 			throw new IOException(e.getMessage());
 		}
-		// CustomElementSecurityManager.remThreadPrivileges(Thread.currentThread());
 	}
 
 	private void save() throws UnsupportedEncodingException, FileNotFoundException {

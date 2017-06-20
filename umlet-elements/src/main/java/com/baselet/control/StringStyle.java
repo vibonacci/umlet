@@ -20,7 +20,8 @@ public class StringStyle {
 		this.stringWithoutMarkup = stringWithoutMarkup;
 	}
 
-	public static String replaceNotEscaped(String line) {
+	public static String replaceNotEscaped(String lineParam) {
+                String line = lineParam;
 		line = StringStyle.replaceNotEscaped(line, SharedConstants.LEFT_QUOTATION, "\u00AB");
 		line = StringStyle.replaceNotEscaped(line, SharedConstants.RIGHT_QUOTATION, "\u00BB");
 		return line;
@@ -29,14 +30,16 @@ public class StringStyle {
 	/**
 	 * this method does not use "complex" regular expressions to avoid problems with compiling to GWT
 	 */
-	public static String replaceNotEscaped(String s, String old, String replacement) {
+	public static String replaceNotEscaped(String string, String old, String replacement) {
+                String s = string;
 		s = s.replace(ESCAPE_CHARACTER + old, TEMP_REPLACEMENT);
 		s = s.replace(old, replacement);
 		s = s.replace(TEMP_REPLACEMENT, old);
 		return s;
 	}
 
-	public static StringStyle analyzeFormatLabels(String s) {
+	public static StringStyle analyzeFormatLabels(String string) {
+                String s = string;
 		Set<FormatLabels> format = new HashSet<FormatLabels>();
 		if (s != null && !s.isEmpty()) {
 			// As long as any text format applies the loop continues

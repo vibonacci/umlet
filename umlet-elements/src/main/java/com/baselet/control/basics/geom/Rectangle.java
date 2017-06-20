@@ -144,13 +144,14 @@ public class Rectangle {
 	}
 
 	public static Rectangle mergeToLeft(Rectangle left, Rectangle right) {
-		if (left == null) {
-			left = right;
+            Rectangle returnedRectangle = left;
+		if (returnedRectangle == null) {
+			returnedRectangle = right;
 		}
 		else {
-			left.merge(right);
+			returnedRectangle.merge(right);
 		}
-		return left;
+		return returnedRectangle;
 	}
 
 	public Rectangle copy() {

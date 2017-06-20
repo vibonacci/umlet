@@ -65,9 +65,16 @@ public class MenuBuilder {
 
 		editMenu = new JMenu(MenuConstants.EDIT);
 		editMenu.setMnemonic(KeyEvent.VK_E);
-		editMenu.add(editUndo = menuFactory.createUndo());
-		editMenu.add(editRedo = menuFactory.createRedo());
-		editMenu.add(editDelete = menuFactory.createDelete());
+                
+                editUndo = menuFactory.createUndo();
+		editMenu.add(editUndo);
+                   
+                editRedo = menuFactory.createRedo();
+		editMenu.add(editRedo);
+                
+                editDelete = menuFactory.createDelete();
+		editMenu.add(editDelete);
+                
 		editMenu.addSeparator();
 		editMenu.add(editSelectAll = menuFactory.createSelectAll());
 		editMenu.add(editGroup = menuFactory.createGroup());

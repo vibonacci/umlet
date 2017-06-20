@@ -156,31 +156,31 @@ public class Relation extends OldGridElement {
 
 		for (int i = 0; i < tmp.size(); i++) {
 			String s = tmp.elementAt(i);
-			if (s.startsWith("q1=") & s.length() > 3) {
+			if (s.startsWith("q1=") && s.length() > 3) {
 				beginQualifier = s.substring(3, s.length());
 			}
-			else if (s.startsWith("q2=") & s.length() > 3) {
+			else if (s.startsWith("q2=") && s.length() > 3) {
 				endQualifier = s.substring(3, s.length());
 			}
-			else if (s.startsWith("m1=") & s.length() > 3) {
+			else if (s.startsWith("m1=") && s.length() > 3) {
 				beginMultiplicity = s.substring(3, s.length());
 			}
-			else if (s.startsWith("m2=") & s.length() > 3) {
+			else if (s.startsWith("m2=") && s.length() > 3) {
 				endMultiplicity = s.substring(3, s.length());
 			}
-			else if (s.startsWith("r1=") & s.length() > 3) {
+			else if (s.startsWith("r1=") && s.length() > 3) {
 				beginRole = s.substring(3, s.length());
 			}
-			else if (s.startsWith("r2=") & s.length() > 3) {
+			else if (s.startsWith("r2=") && s.length() > 3) {
 				endRole = s.substring(3, s.length());
 			}
-			else if (s.startsWith("p1=") & s.length() > 3) {
+			else if (s.startsWith("p1=") && s.length() > 3) {
 				beginPort = s.substring(3, s.length());
 			}
-			else if (s.startsWith("p2=") & s.length() > 3) {
+			else if (s.startsWith("p2=") && s.length() > 3) {
 				endPort = s.substring(3, s.length());
 			}
-			else if (s.startsWith("lt=") & s.length() > 3) {
+			else if (s.startsWith("lt=") && s.length() > 3) {
 
 				csdStartText = "";
 				csdEndText = "";

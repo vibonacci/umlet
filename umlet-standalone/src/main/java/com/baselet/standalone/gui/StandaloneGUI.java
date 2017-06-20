@@ -232,7 +232,7 @@ public class StandaloneGUI extends BaseGUI {
 
 	@Override
 	public int getMailSplitPosition() {
-		return Config.getInstance().getMail_split_position(); // must return stored value in Constants, otherwise 0 will be returned in case of a closed panel
+		return Config.getInstance().getMailSplitPosition(); // must return stored value in Constants, otherwise 0 will be returned in case of a closed panel
 	}
 
 	@Override

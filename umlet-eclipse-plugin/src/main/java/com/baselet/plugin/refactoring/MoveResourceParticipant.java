@@ -83,13 +83,11 @@ public class MoveResourceParticipant extends MoveParticipant implements ISharabl
 
 			IResource origResource = (IResource) element;
 			final IFolder destinationFolder;
-			{
-				Object destination = entry.args.getDestination();
-				if (!(destination instanceof IFolder)) {
-					continue;
-				}
-				destinationFolder = (IFolder) destination;
-			}
+                        Object destination = entry.args.getDestination();
+                        if (!(destination instanceof IFolder)) {
+                                continue;
+                        }
+                        destinationFolder = (IFolder) destination;
 
 			IJavaProject javaProject = UmletPluginUtils.getJavaProject(origResource.getProject());
 			if (javaProject == null) {

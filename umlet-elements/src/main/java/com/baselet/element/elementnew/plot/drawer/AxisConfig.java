@@ -8,10 +8,14 @@ import com.baselet.element.elementnew.plot.parser.PlotConstants.AxisShow;
 
 public class AxisConfig {
 
-	private boolean descAxisLine, valueAxisLine;
-	private boolean descAxisMarkers, valueAxisMarkers;
-	private boolean descAxisText, valueAxisText;
-	private boolean descAxisGray, valueAxisGray;
+	private boolean descAxisLine;
+        private boolean valueAxisLine;
+	private boolean valueAxisMarkers;
+        private boolean descAxisMarkers;
+	private boolean descAxisText;
+        private boolean valueAxisText;
+	private boolean descAxisGray; 
+        private boolean valueAxisGray;
 
 	private TreeSet<Double> valueAxisList;
 	private boolean showRelevantValues;
